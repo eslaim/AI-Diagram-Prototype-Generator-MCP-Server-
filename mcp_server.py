@@ -76,12 +76,12 @@ TOOLS_PROMPT_DICT = {
     "architecture": {
         "id": "architecture",
         "description": "生成技术架构图",
-        "prompts": {"draw.io": "prompts/architecture_as_drawio.md"},
+        "prompts": {"draw.io": "prompts/draw_architecture_prompt.md"},
     },
     "flowchart": {
         "id": "flowchart",
         "description": "生成业务流程图",
-        "prompts": {"draw.io": "prompts/flowchart_as_drawio.md"},
+        "prompts": {"draw.io": "prompts/flowchart_prompt.md"},
     },
     "UI_UX": {
         "id": "UI_UX",
