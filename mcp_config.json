@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "draw-architecture": {
+      "command": "uv --directory full-path-to-draw_architecture_mcp run mcp_server.py",
+      "args": ["/path/to/draw_architecture_mcp/mcp_server.py"],
+      "env": {
+        "PROVIDER": "zhipuai",
+        "ZHIPUAI_API_KEY": "your_api_key_here",
+        "ZHIPUAI_MODEL": "glm-4.5",
+        "ZHIPUAI_MODEL_MAX_TOKENS": "98304",
+        "OPENAI_API_KEY": "your_api_key_here",
+        "OPENAI_BASE_URL": "https://api.openai.com/v1",
+        "GEMINI_API_KEY": "your_api_key_here",
+        "GEMINI_BASE_URL": "https://api.gemini.com/v1"
+      }
+    }
+  }
+}
