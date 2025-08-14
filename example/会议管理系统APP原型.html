@@ -1,0 +1,550 @@
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>会议管理系统APP原型</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .phone-frame {
+            width: 375px;
+            height: 812px;
+            border: 8px solid #1a1a1a;
+            border-radius: 40px;
+            overflow: hidden;
+            position: relative;
+            background: #ffffff;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .card-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .hover-scale {
+            transition: transform 0.2s ease-in-out;
+        }
+        .hover-scale:hover {
+            transform: scale(1.02);
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-8">
+    <div class="container mx-auto">
+        <h1 class="text-3xl font-bold text-center mb-8 text-black">会议管理系统APP原型</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
+            
+            <!-- 1. 登录页面 -->
+            <div class="phone-frame fade-in">
+                <div class="h-full gradient-bg flex flex-col justify-center items-center p-8">
+                    <div class="bg-white rounded-full p-6 mb-8 card-shadow">
+                        <i class="fas fa-calendar-check text-5xl text-purple-600"></i>
+                    </div>
+                    <h2 class="text-white text-2xl font-bold mb-8">会议管理系统</h2>
+                    <div class="w-full space-y-4">
+                        <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-4">
+                            <input type="text" placeholder="用户名" class="w-full bg-transparent text-white placeholder-white/70 outline-none">
+                        </div>
+                        <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-4">
+                            <input type="password" placeholder="密码" class="w-full bg-transparent text-white placeholder-white/70 outline-none">
+                        </div>
+                        <button class="w-full bg-white text-purple-600 rounded-2xl py-4 font-semibold hover-scale">
+                            登录
+                        </button>
+                    </div>
+                    <div class="mt-8 flex space-x-4 text-white/80 text-sm">
+                        <span>忘记密码？</span>
+                        <span>新用户注册</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. 主页/仪表板 -->
+            <div class="phone-frame fade-in">
+                <div class="h-full bg-gray-50">
+                    <div class="gradient-bg px-6 pt-12 pb-20 rounded-b-3xl">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-white text-xl font-semibold">早上好，张经理</h3>
+                            <i class="fas fa-bell text-white text-xl"></i>
+                        </div>
+                        <div class="bg-white/20 backdrop-blur-sm rounded-2xl p-4">
+                            <p class="text-white/80 text-sm">今日会议</p>
+                            <p class="text-white text-3xl font-bold">3 场</p>
+                        </div>
+                    </div>
+                    
+                    <div class="px-6 -mt-12">
+                        <div class="bg-white rounded-2xl p-4 mb-4 card-shadow">
+                            <h4 class="text-black font-semibold mb-3">今日待办</h4>
+                            <div class="space-y-3">
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-2 h-2 bg-red-500 rounded-full"></div>
+                                    <span class="text-black text-sm">10:00 产品评审会议</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                                    <span class="text-black text-sm">14:30 客户演示</span>
+                                </div>
+                                <div class="flex items-center space-x-3">
+                                    <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                                    <span class="text-black text-sm">16:00 团队周会</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-4 mb-20">
+                            <div class="bg-white rounded-2xl p-6 text-center card-shadow hover-scale">
+                                <i class="fas fa-plus-circle text-3xl text-purple-600 mb-2"></i>
+                                <p class="text-black text-sm">快速预定</p>
+                            </div>
+                            <div class="bg-white rounded-2xl p-6 text-center card-shadow hover-scale">
+                                <i class="fas fa-qrcode text-3xl text-purple-600 mb-2"></i>
+                                <p class="text-black text-sm">扫码签到</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="absolute bottom-0 left-0 right-0 bg-white border-t border-gray-200">
+                        <div class="flex justify-around py-3">
+                            <i class="fas fa-home text-purple-600 text-xl"></i>
+                            <i class="fas fa-calendar text-gray-400 text-xl"></i>
+                            <i class="fas fa-users text-gray-400 text-xl"></i>
+                            <i class="fas fa-user text-gray-400 text-xl"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. 会议室管理页面 -->
+            <div class="phone-frame fade-in">
+                <div class="h-full bg-gray-50">
+                    <div class="bg-white px-6 py-4 border-b border-gray-200">
+                        <h3 class="text-black text-xl font-semibold text-center">会议室管理</h3>
+                    </div>
+                    
+                    <div class="px-6 py-4">
+                        <div class="flex space-x-2 mb-4">
+                            <button class="flex-1 bg-purple-600 text-white py-2 rounded-xl text-sm">日视图</button>
+                            <button class="flex-1 bg-white text-gray-600 py-2 rounded-xl text-sm">周视图</button>
+                            <button class="flex-1 bg-white text-gray-600 py-2 rounded-xl text-sm">月视图</button>
+                        </div>
+                        
+                        <div class="bg-white rounded-2xl p-4 mb-4 card-shadow">
+                            <div class="flex justify-between items-center mb-3">
+                                <h4 class="text-black font-semibold">A101 会议室</h4>
+                                <span class="text-green-600 text-sm">可用</span>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="bg-green-100 rounded-lg p-2 text-xs">
+                                    <span class="text-green-800">09:00-10:00 已预定</span>
+                                </div>
+                                <div class="bg-gray-100 rounded-lg p-2 text-xs">
+                                    <span class="text-gray-600">10:00-11:00 空闲</span>
+                                </div>
+                                <div class="bg-green-100 rounded-lg p-2 text-xs">
+                                    <span class="text-green-800">11:00-12:00 已预定</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-2xl p-4 mb-4 card-shadow">
+                            <div class="flex justify-between items-center mb-3">
+                                <h4 class="text-black font-semibold">B202 会议室</h4>
+                                <span class="text-red-600 text-sm">使用中</span>
+                            </div>
+                            <div class="space-y-2">
+                                <div class="bg-red-100 rounded-lg p-2 text-xs">
+                                    <span class="text-red-800">09:00-11:00 使用中</span>
+                                </div>
+                                <div class="bg-gray-100 rounded-lg p-2 text-xs">
+                                    <span class="text-gray-600">11:00-12:00 空闲</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button class="w-full bg-purple-600 text-white py-3 rounded-2xl font-semibold hover-scale">
+                            预定会议室
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. 会议管理页面 -->
+            <div class="phone-frame fade-in">
+                <div class="h-full bg-gray-50">
+                    <div class="bg-white px-6 py-4 border-b border-gray-200">
+                        <h3 class="text-black text-xl font-semibold text-center">会议管理</h3>
+                    </div>
+                    
+                    <div class="px-6 py-4">
+                        <div class="flex space-x-2 mb-4">
+                            <button class="flex-1 bg-purple-600 text-white py-2 rounded-xl text-sm">全部</button>
+                            <button class="flex-1 bg-white text-gray-600 py-2 rounded-xl text-sm">待审核</button>
+                            <button class="flex-1 bg-white text-gray-600 py-2 rounded-xl text-sm">已通过</button>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <div class="bg-white rounded-2xl p-4 card-shadow hover-scale">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="text-black font-semibold">产品评审会议</h4>
+                                    <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">待审核</span>
+                                </div>
+                                <p class="text-gray-600 text-sm mb-2">2024年1月15日 10:00-11:30</p>
+                                <p class="text-gray-600 text-sm mb-2">A101会议室</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex -space-x-2">
+                                        <img src="https://picsum.photos/seed/user1/32/32.jpg" class="w-8 h-8 rounded-full border-2 border-white">
+                                        <img src="https://picsum.photos/seed/user2/32/32.jpg" class="w-8 h-8 rounded-full border-2 border-white">
+                                        <img src="https://picsum.photos/seed/user3/32/32.jpg" class="w-8 h-8 rounded-full border-2 border-white">
+                                    </div>
+                                    <i class="fas fa-chevron-right text-gray-400"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-white rounded-2xl p-4 card-shadow hover-scale">
+                                <div class="flex justify-between items-start mb-2">
+                                    <h4 class="text-black font-semibold">客户演示会议</h4>
+                                    <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">已通过</span>
+                                </div>
+                                <p class="text-gray-600 text-sm mb-2">2024年1月15日 14:30-16:00</p>
+                                <p class="text-gray-600 text-sm mb-2">B202会议室</p>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex -space-x-2">
+                                        <img src="https://picsum.photos/seed/user4/32/32.jpg" class="w-8 h-8 rounded-full border-2 border-white">
+                                        <img src="https://picsum.photos/seed/user5/32/32.jpg" class="w-8 h-8 rounded-full border-2 border-white">
+                                    </div>
+                                    <i class="fas fa-chevron-right text-gray-400"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button class="fixed bottom-20 right-6 bg-purple-600 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover-scale">
+                            <i class="fas fa-plus text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. 会议议题管理页面 -->
+            <div class="phone-frame fade-in">
+                <div class="h-full bg-gray-50">
+                    <div class="bg-white px-6 py-4 border-b border-gray-200">
+                        <h3 class="text-black text-xl font-semibold text-center">议题管理</h3>
+                    </div>
+                    
+                    <div class="px-6 py-4">
+                        <div class="bg-white rounded-2xl p-4 mb-4 card-shadow">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="text-black font-semibold">产品路线图讨论</h4>
+                                <span class="bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded-full">高优先级</span>
+                            </div>
+                            <p class="text-gray-600 text-sm mb-2">提交人：李产品</p>
+                            <p class="text-gray-600 text-sm mb-3">预计时长：30分钟</p>
+                            <div class="bg-gray-100 rounded-lg p-3">
+                                <p class="text-gray-700 text-sm">讨论Q1产品功能规划，确定开发优先级...</p>
+                            </div>
+                            <div class="flex justify-between mt-3">
+                                <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded-full">待审核</span>
+                                <i class="fas fa-chevron-right text-gray-400"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-2xl p-4 mb-4 card-shadow">
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="text-black font-semibold">技术架构优化</h4>
+                                <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">中优先级</span>
+                            </div>
+                            <p class="text-gray-600 text-sm mb-2">提交人：王技术</p>
+                            <p class="text-gray-600 text-sm mb-3">预计时长：45分钟</p>
+                            <div class="bg-gray-100 rounded-lg p-3">
+                                <p class="text-gray-700 text-sm">讨论系统性能优化方案，提升用户体验...</p>
+                            </div>
+                            <div class="flex justify-between mt-3">
+                                <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">已通过</span>
+                                <i class="fas fa-chevron-right text-gray-400"></i>
+                            </div>
+                        </div>
+                        
+                        <button class="w-full bg-purple-600 text-white py-3 rounded-2xl font-semibold hover-scale">
+                            新建议题
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. 会务管理页面 -->
+            <div class="phone-frame fade-in">
+                <div class="h-full bg-gray-50">
+                    <div class="bg-white px-6 py-4 border-b border-gray-200">
+                        <h3 class="text-black text-xl font-semibold text-center">会务管理</h3>
+                    </div>
+                    
+                    <div class="px-6 py-4">
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div class="bg-white rounded-2xl p-6 text-center card-shadow hover-scale">
+                                <i class="fas fa-user-plus text-3xl text-purple-600 mb-2"></i>
+                                <p class="text-black font-semibold">参会报名</p>
+                                <p class="text-gray-600 text-sm">23人已报名</p>
+                            </div>
+                            <div class="bg-white rounded-2xl p-6 text-center card-shadow hover-scale">
+                                <i class="fas fa-qrcode text-3xl text-purple-600 mb-2"></i>
+                                <p class="text-black font-semibold">签到管理</p>
+                                <p class="text-gray-600 text-sm">18人已签到</p>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-2xl p-4 mb-4 card-shadow">
+                            <h4 class="text-black font-semibold mb-3">参会人员列表</h4>
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-3">
+                                        <img src="https://picsum.photos/seed/attendee1/40/40.jpg" class="w-10 h-10 rounded-full">
+                                        <div>
+                                            <p class="text-black font-medium">张三</p>
+                                            <p class="text-gray-600 text-sm">产品部</p>
+                                        </div>
+                                    </div>
+                                    <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">已签到</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-3">
+                                        <img src="https://picsum.photos/seed/attendee2/40/40.jpg" class="w-10 h-10 rounded-full">
+                                        <div>
+                                            <p class="text-black font-medium">李四</p>
+                                            <p class="text-gray-600 text-sm">技术部</p>
+                                        </div>
+                                    </div>
+                                    <span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded-full">未签到</span>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-3">
+                                        <img src="https://picsum.photos/seed/attendee3/40/40.jpg" class="w-10 h-10 rounded-full">
+                                        <div>
+                                            <p class="text-black font-medium">王五</p>
+                                            <p class="text-gray-600 text-sm">市场部</p>
+                                        </div>
+                                    </div>
+                                    <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full">已签到</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. 会议资源管理页面 -->
+            <div class="phone-frame fade-in">
+                <div class="h-full bg-gray-50">
+                    <div class="bg-white px-6 py-4 border-b border-gray-200">
+                        <h3 class="text-black text-xl font-semibold text-center">资源管理</h3>
+                    </div>
+                    
+                    <div class="px-6 py-4">
+                        <div class="grid grid-cols-2 gap-4 mb-6">
+                            <div class="bg-white rounded-2xl p-4 card-shadow hover-scale">
+                                <i class="fas fa-laptop text-3xl text-purple-600 mb-2"></i>
+                                <p class="text-black font-medium">投影仪</p>
+                                <p class="text-green-600 text-sm">可用: 3台</p>
+                            </div>
+                            <div class="bg-white rounded-2xl p-4 card-shadow hover-scale">
+                                <i class="fas fa-microphone text-3xl text-purple-600 mb-2"></i>
+                                <p class="text-black font-medium">麦克风</p>
+                                <p class="text-green-600 text-sm">可用: 5个</p>
+                            </div>
+                            <div class="bg-white rounded-2xl p-4 card-shadow hover-scale">
+                                <i class="fas fa-video text-3xl text-purple-600 mb-2"></i>
+                                <p class="text-black font-medium">摄像头</p>
+                                <p class="text-yellow-600 text-sm">可用: 1台</p>
+                            </div>
+                            <div class="bg-white rounded-2xl p-4 card-shadow hover-scale">
+                                <i class="fas fa-chair text-3xl text-purple-600 mb-2"></i>
+                                <p class="text-black font-medium">座椅</p>
+                                <p class="text-green-600 text-sm">可用: 20把</p>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-2xl p-4 card-shadow">
+                            <h4 class="text-black font-semibold mb-3">预定记录</h4>
+                            <div class="space-y-2">
+                                <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                                    <div>
+                                        <p class="text-black text-sm font-medium">投影仪 A001</p>
+                                        <p class="text-gray-600 text-xs">2024-01-15 10:00-12:00</p>
+                                    </div>
+                                    <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">使用中</span>
+                                </div>
+                                <div class="flex justify-between items-center py-2 border-b border-gray-100">
+                                    <div>
+                                        <p class="text-black text-sm font-medium">麦克风 B002</p>
+                                        <p class="text-gray-600 text-xs">2024-01-15 14:00-16:00</p>
+                                    </div>
+                                    <span class="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded-full">待使用</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8. 会议资料管理页面 -->
+            <div class="phone-frame fade-in">
+                <div class="h-full bg-gray-50">
+                    <div class="bg-white px-6 py-4 border-b border-gray-200">
+                        <h3 class="text-black text-xl font-semibold text-center">资料管理</h3>
+                    </div>
+                    
+                    <div class="px-6 py-4">
+                        <div class="flex items-center bg-white rounded-2xl p-3 mb-4 card-shadow">
+                            <i class="fas fa-search text-gray-400 mr-3"></i>
+                            <input type="text" placeholder="搜索资料" class="flex-1 outline-none text-black">
+                        </div>
+                        
+                        <div class="bg-white rounded-2xl p-4 mb-4 card-shadow hover-scale">
+                            <div class="flex items-start space-x-3">
+                                <div class="bg-red-100 p-3 rounded-xl">
+                                    <i class="fas fa-file-pdf text-red-600 text-xl"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="text-black font-semibold">产品需求文档.pdf</h4>
+                                    <p class="text-gray-600 text-sm">2.3 MB · 2024-01-10</p>
+                                    <div class="flex items-center space-x-4 mt-2">
+                                        <span class="text-purple-600 text-sm">查看</span>
+                                        <span class="text-purple-600 text-sm">下载</span>
+                                        <span class="text-purple-600 text-sm">分享</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-2xl p-4 mb-4 card-shadow hover-scale">
+                            <div class="flex items-start space-x-3">
+                                <div class="bg-green-100 p-3 rounded-xl">
+                                    <i class="fas fa-file-excel text-green-600 text-xl"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="text-black font-semibold">会议议程安排.xlsx</h4>
+                                    <p class="text-gray-600 text-sm">156 KB · 2024-01-12</p>
+                                    <div class="flex items-center space-x-4 mt-2">
+                                        <span class="text-purple-600 text-sm">查看</span>
+                                        <span class="text-purple-600 text-sm">下载</span>
+                                        <span class="text-purple-600 text-sm">分享</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-2xl p-4 mb-4 card-shadow hover-scale">
+                            <div class="flex items-start space-x-3">
+                                <div class="bg-blue-100 p-3 rounded-xl">
+                                    <i class="fas fa-file-powerpoint text-blue-600 text-xl"></i>
+                                </div>
+                                <div class="flex-1">
+                                    <h4 class="text-black font-semibold">产品演示PPT.pptx</h4>
+                                    <p class="text-gray-600 text-sm">5.8 MB · 2024-01-13</p>
+                                    <div class="flex items-center space-x-4 mt-2">
+                                        <span class="text-purple-600 text-sm">查看</span>
+                                        <span class="text-purple-600 text-sm">下载</span>
+                                        <span class="text-purple-600 text-sm">分享</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button class="fixed bottom-20 right-6 bg-purple-600 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-lg hover-scale">
+                            <i class="fas fa-upload text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 9. 个人中心页面 -->
+            <div class="phone-frame fade-in">
+                <div class="h-full bg-gray-50">
+                    <div class="gradient-bg px-6 pt-12 pb-24">
+                        <div class="text-center">
+                            <img src="https://picsum.photos/seed/profile/100/100.jpg" class="w-24 h-24 rounded-full mx-auto mb-4 border-4 border-white">
+                            <h3 class="text-white text-xl font-semibold">张经理</h3>
+                            <p class="text-white/80 text-sm">产品部 · 部门经理</p>
+                        </div>
+                    </div>
+                    
+                    <div class="px-6 -mt-12">
+                        <div class="bg-white rounded-2xl p-4 mb-4 card-shadow">
+                            <div class="grid grid-cols-3 text-center">
+                                <div>
+                                    <p class="text-black text-2xl font-bold">42</p>
+                                    <p class="text-gray-600 text-sm">参会次数</p>
+                                </div>
+                                <div class="border-x border-gray-200">
+                                    <p class="text-black text-2xl font-bold">18</p>
+                                    <p class="text-gray-600 text-sm">主持会议</p>
+                                </div>
+                                <div>
+                                    <p class="text-black text-2xl font-bold">96%</p>
+                                    <p class="text-gray-600 text-sm">出席率</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-2xl p-4 mb-4 card-shadow">
+                            <h4 class="text-black font-semibold mb-3">会议统计</h4>
+                            <div class="space-y-3">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-600 text-sm">本月参会</span>
+                                    <span class="text-black font-medium">8次</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-600 text-sm">平均时长</span>
+                                    <span class="text-black font-medium">1.5小时</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-600 text-sm">准时率</span>
+                                    <span class="text-black font-medium">100%</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-white rounded-2xl p-4 mb-20 card-shadow">
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-3">
+                                        <i class="fas fa-user-cog text-purple-600"></i>
+                                        <span class="text-black">个人信息</span>
+                                    </div>
+                                    <i class="fas fa-chevron-right text-gray-400"></i>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-3">
+                                        <i class="fas fa-cog text-purple-600"></i>
+                                        <span class="text-black">设置</span>
+                                    </div>
+                                    <i class="fas fa-chevron-right text-gray-400"></i>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center space-x-3">
+                                        <i class="fas fa-sign-out-alt text-purple-600"></i>
+                                        <span class="text-black">退出登录</span>
+                                    </div>
+                                    <i class="fas fa-chevron-right text-gray-400"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</body>
+</html>
+```

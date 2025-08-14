@@ -24,6 +24,24 @@
 | 生成苹果风格App原型 | `APPLE_MOBILE_APP` | `html` |
 | 生成微信小程序原型 | `WEIXIN_MINIAPP` | `html` |
 
+## 🚀 效果
+以下范例通过chatwise 配合本mcp，使用glm-4.5模型生成
+
+### 对话过程
+![对话流程1](example/step1.jpg)
+![对话流程2](example/step2.jpg)
+![对话流程3](example/step3.jpg)
+
+### 生成的架构图
+![生成的架构图](example/会议管理系统业务框架图.jpg)
+
+### 生成的业务流程图
+![生成的架构图](example/会议管理系统业务流程图.png)
+
+### 生成的APP原型
+![生成的APP原型](example/会议管理系统APP原型.png)
+
+
 ## ⚙️ 安装与配置
 
 ### 1\. 环境要求

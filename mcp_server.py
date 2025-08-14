@@ -30,6 +30,8 @@ from zhipuai import ZhipuAI
 from openai import OpenAI, APIError, Timeout, APIConnectionError, AsyncOpenAI
 import xml.etree.ElementTree as ET
 from xml.sax.saxutils import escape
+import platform
+
 
 # 加载环境变量
 try:
@@ -103,7 +105,7 @@ TOOLS_PROMPT_DICT = {
     },
     "COMMON_PROTOTYPE": {
         "id": "COMMON_PROTOTYPE",
-        "description": "生成通用UI/UX原型,如无特殊需求，直接使用这个即可",
+        "description": "生成通用手机APP的UI/UX原型,如无特殊需求，直接使用这个即可",
         "prompts": {"html": "prompts/common_prototype_prompt.md"},
     },                            
 }
@@ -725,6 +727,10 @@ async def handle_list_tools() -> List[Tool]:
             description="列出支持绘制的架构图类型",
             inputSchema={"type": "object", "properties": {}, "required": []},
         ),
+        Tool(name="get_local_directory_path",
+             description="获取本地常用的目录路径，包括桌面、文档、下载、音乐、图片、视频、应用等",
+             inputSchema={"type": "object", "properties": {}, "required": []},
+             )
     ]
 
 
@@ -775,15 +781,6 @@ async def handle_call_tool(name: str, arguments: Dict[str, Any]) -> List[TextCon
                 TextContent(type="text", text=f"❌ 错误：无法加载对应的提示词文件。")
             ]
 
-        if not prompt_template:
-            logger.warning("无法加载提示词模板")
-            return [
-                TextContent(
-                    type="text",
-                    text="警告：无法加载提示词模板，将使用默认规则生成架构图",
-                )
-            ]
-
         # 2. 根据file_type决定调用哪个生成器
         #    这里的逻辑和你最初的实现一样，是正确的！
         content = ""
@@ -830,6 +827,27 @@ async def handle_call_tool(name: str, arguments: Dict[str, Any]) -> List[TextCon
             for f_type, prompt_file in tool_info["prompts"].items():
                 supported_types_text += f"  - 支持格式: `{f_type}`\n"
         return [TextContent(type="text", text=supported_types_text)]
+
+    elif name == "get_local_directory_path":
+        # 获取本地常用目录路径,需要兼容windows和macos
+        # 获取用户的主目录，这是跨平台的
+        home_dir = Path.home()
+
+        # 定义在 Windows 和 macOS 上通用的目录名称
+        # 注意：这些目录的名称可能会因系统语言或用户自定义而异
+        # 但在绝大多数默认设置下是准确的
+        common_dirs = {
+            "操作系统" : platform.system(),
+            "桌面": home_dir / "Desktop",
+            "下载": home_dir / "Downloads",
+            "文档": home_dir / "Documents",
+            "图片": home_dir / "Pictures",
+            "音乐": home_dir / "Music",
+            "视频": home_dir / "Videos",
+        }
+
+        # 返回一个字典，键是目录的中文名，值是 Path 对象
+        return [TextContent(type="text", text=str(common_dirs))]
 
     else:
         return [
