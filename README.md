@@ -54,15 +54,14 @@
 
 ```bash
 # 1. 克隆项目
-git clone https://your-repo-url/draw-generator-mcp.git
-cd draw-generator-mcp
+git clone https://github.com/SimonUTD/AI-Diagram-Prototype-Generator-MCP-Server-.git
+cd AI-Diagram-Prototype-Generator-MCP-Server-
 
 # 2. (推荐) 创建并激活虚拟环境
 python -m venv .venv
 source .venv/bin/activate  # on Windows, use `.venv\Scripts\activate`
 
 # 3. 安装依赖
-# 假设你已有一个 requirements.txt 文件
 pip install -r requirements.txt
 ```
 
