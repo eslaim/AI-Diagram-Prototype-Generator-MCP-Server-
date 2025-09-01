@@ -5,23 +5,11 @@
 ## ✨ 功能特性 (Features)
 
   - 🤖 **AI 驱动生成**：内置多种强大的AI模型，智能理解复杂需求。
-  - 🎬 全自动演示文稿生成 (Automated Presentation Generation)：提供PPT主题或大纲，一键完成从内容架构规划到单页视觉设计的全套SVG幻灯片生成，极大提升办公效率。
   - 🎨 **多图表类型**：不仅能画架构图、流程图，还能生成多种风格的UI/UX原型。
   - 📱 **风格化原型 (Styled Prototypes)**：内置苹果HIG、微信小程序等专业设计规范，一句话生成“苹果味”或“微信味”的精准原型。
   - 🧊 **动态提示词系统**：独创的`(意图+格式)`组合式提示词系统，精确、稳定地指导AI进行创作。
   - 🔧 **Draw.io & HTML 兼容**：可生成 `.drawio` 文件用于二次编辑，或生成可直接运行的 `.html` 文件进行交互演示。
-  - 🤯 **智能回退机制**：在AI生成Draw.io图表失败或内容过简时，自动切换到内置的规则引擎，保证总有产出。
   - 🤝 **MCP 协议**：基于 Model Context Protocol，可无缝与支持MCP的AI助手（如OpenAI的Assistants、Coze、Dify、各种IDE插件等）集成。
-
-## 🚀 支持的核心功能
-本工具现在提供两大类功能：基础生成工具和自动化工作流。
-
-### 自动化工作流 (Automated Workflows)
-这是本项目的核心亮点，通过一个指令完成复杂的、多步骤的任务。
-
-| 工作流名称 | 工具 (name) | 描述 | 输入 | 输出 |
-| :----------------------- | :----------------- | :----------------------- | :----------------------- | :----------------------- |
-| 全自动PPT生成 | `generate_full_ppt_presentation` | 端到端生成一套完整的PPT演示文稿 | 主题、大纲或原始材料 | 多张独立的SVG幻灯片文件 |
 
 ### 基础生成工具 (Basic Generation Tools)
 这些是构成工作流的原子能力，也可以单独调用。
@@ -33,10 +21,11 @@
 | 生成通用UI/UX原型 | `UI_UX` | `draw.io` (线框图), `html` |
 | 生成苹果风格App原型 | `APPLE_MOBILE_APP` | `html` |
 | 生成微信小程序原型 | `WEIXIN_MICROAPP` | `html` |
-| (内部) 生成PPT架构 | `PPT_PLAN` | `only_chat` |
-| (内部) 生成单页PPT(SVG) | `PPT_SVG` | `svg` |
-
-
+| 生成用户故事地图 | `USER_STORY_MAP` | `draw.io`, `html` |
+| 生成服务蓝图 | `SERVICE_BLUEPRINT` | `draw.io` |
+| 生成用户画像 | `USER_PERSONA` | `draw.io` |
+| 生成用户旅程图 | `USER_JOURNEY_MAP` | `draw.io` |
+| 生成同理心图 | `EMPATHY_MAP` | `draw.io` |
 
 ## 🚀 效果
 以下范例通过chatwise 配合本mcp，使用glm-4.5模型生成
@@ -55,6 +44,17 @@
 ### 生成的APP原型
 ![生成的APP原型](example/会议管理系统APP原型.png)
 
+### 生成的用户画像
+![生成的用户画像](example/会议管理系统用户画像.png)
+
+### 生成的用户故事地图
+![生成的用户故事地图](example/会议管理系统用户故事地图.png)
+
+### 生成的用户旅程图
+![生成的用户旅程图](example/会议管理系统用户旅程图.png)
+
+### 生成的同理心图
+![生成的同理心图](example/会议管理系统同理心图.png)
 
 ## ⚙️ 安装与配置
 
@@ -124,7 +124,7 @@ ZHIPUAI_MODEL_MAX_TOKENS="131072"
       "env": {
         "PROVIDER": "zhipuai",
         "ZHIPUAI_API_KEY": "your_api_key_here",
-        "ZHIPUAI_MODEL": "gglm-4.5",
+        "ZHIPUAI_MODEL": "glm-4.5",
         "ZHIPUAI_MODEL_MAX_TOKENS": "98304",
         "OPENAI_API_KEY": "your_api_key_here",
         "OPENAI_BASE_URL": "https://api.openai.com/v1",
@@ -204,14 +204,6 @@ ZHIPUAI_MODEL_MAX_TOKENS="131072"
 draw-generator-mcp/
 ├── mcp_server.py                # MCP 服务器主文件
 ├── prompts/                     # 提示词模板目录
-│   ├── architecture_as_drawio.md
-│   ├── flowchart_as_drawio.md
-│   ├── ui_ux_as_drawio.md
-│   ├── ui_ux_as_html.md
-│   ├── apple_mobile_prototype_prompt.md
-│   └── weixin_miniapp_prompt.md
-│   ├── ppt_plan_prompt.md
-│   └── ppt_svg_prompt.md
 ├── .env.example                 # 环境变量示例
 ├── pyproject.toml               # (可选) 项目配置
 ├── requirements.txt             # (推荐) 依赖列表

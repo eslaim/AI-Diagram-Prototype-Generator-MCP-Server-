@@ -77,46 +77,72 @@ server = Server("draw-architecture")
 TOOLS_PROMPT_DICT = {
     "architecture": {
         "id": "architecture",
-        "description": "生成技术架构图",
-        "prompts": {"draw.io": "prompts/draw_architecture_prompt.md"},
+        "description": "生成DrawIO格式的技术架构图",
+        "prompts": {"draw.io": "prompts/drawIO_architecture_prompt.md"},
     },
     "flowchart": {
         "id": "flowchart",
-        "description": "生成业务流程图",
-        "prompts": {"draw.io": "prompts/flowchart_prompt.md"},
+        "description": "生成DrawIO格式的业务流程图",
+        "prompts": {"draw.io": "prompts/drawIO_flowChart_prompt.md"},
+    },
+    "userJourneyMap": {
+        "id": "userJourneyMap",
+        "description": "生成用DrawIO格式的户需求调研所需的用户旅程图",
+        "prompts": {"draw.io": "prompts/drawIO_userJourneyMap_prompt.md"},
+    },
+    "userStoryMap": {
+        "id": "userStoryMap",
+        "description": "生成DrawIO格式的用户需求调研所需的用户故事地图",
+        "prompts": {"draw.io": "prompts/drawIO_userStoryMap_prompt.md"},
+    },
+    "userPersona": {
+        "id": "userPersona",
+        "description": "生成DrawIO或html格式的用户需求调研或产品设计所需的用户画像图",
+        "prompts": {"draw.io": "prompts/drawIO_userPersona_prompt.md",
+                    "html":"prompts/html_userPersona_prompt.md"},
+    },
+    "empathyMap": {
+        "id": "empathyMap",
+        "description": "生成DrawIO格式的用户需求调研或产品设计所需的同理心映射图",
+        "prompts": {"draw.io": "prompts/drawIO_empathyMap_prompt.md"},
+    },
+    "serviceBlueprint": {
+        "id": "serviceBlueprint",
+        "description": "生成DrawIO格式的用户需求调研或产品设计所需的业务蓝图",
+        "prompts": {"draw.io": "prompts/drawIO_serviceBlueprint_prompt.md"},
     },
     "UI_UX": {
         "id": "UI_UX",
-        "description": "生成无指定风格UI/UX原型",
+        "description": "生成DrawIO格式或html格式的无指定风格UI/UX原型，如用户无特殊指定，一般使用html格式",
         "prompts": {
-            "draw.io": "prompts/prototype_prompt.md",  # 这个Prompt教AI如何用draw.io组件画线框图
-            "html": "prompts/prototype_prompt.md",  # 这个Prompt教AI如何用html/css/js写真实原型
+            "draw.io": "prompts/drawIO_prototype_prompt.md",  # 这个Prompt教AI如何用draw.io组件画线框图
+            "html": "prompts/html_prototype_prompt.md",  # 这个Prompt教AI如何用html/css/js写真实原型
         },
     },
     "APPLE_MOBILE_APP_PROTOTYPE": {
         "id": "APPLE_MOBILE_APP",
-        "description": "生成苹果手机APP风格的UI/UX原型",
-        "prompts": {"html": "prompts/apple_mobile_prototype_prompt.md"},
+        "description": "生成html格式的苹果手机APP风格的UI/UX原型",
+        "prompts": {"html": "prompts/html_apple_mobile_prototype_prompt.md"},
     },
     "WEIXIN_MICROAPP_PROTOTYPE": {
         "id": "WEIXIN_MICROAPP",
-        "description": "生成微信小程序风格的UI/UX原型",
-        "prompts": {"html": "prompts/wx_miniapp_prompt.md"},
+        "description": "生成html格式的微信小程序风格的UI/UX原型",
+        "prompts": {"html": "prompts/html_weChatMiniApp_prompt.md"},
     },
     "COMMON_PROTOTYPE": {
         "id": "COMMON_PROTOTYPE",
-        "description": "生成通用手机APP的UI/UX原型,如无特殊需求，直接使用这个即可",
-        "prompts": {"html": "prompts/common_prototype_prompt.md"},
+        "description": "生成html格式的通用手机APP的UI/UX原型,如无特殊需求，直接使用这个即可",
+        "prompts": {"html": "prompts/html_common_prototype_prompt.md"},
     },
     "PPT_SVG": {
         "id": "PPT_SVG",
-        "description": "根据提供的信息，生成16:9比例的SVG格式的单页幻灯片，用于PPT演示文件的生成",
-        "prompts": {"svg": "prompts/ppt_svg_prompt.md"},
+        "description": "生成SVG格式的16:9比例的单页PPT幻灯片",
+        "prompts": {"svg": "prompts/svg_ppt_svg_prompt.md"},
     },
     "PPT_PLAN": {
         "id": "PPT_PLAN",
-        "description": "在具体制作PPT之前，根据用户提供的信息进行思考，推断其沟通意图，生成PPT演示文稿的架构",
-        "prompts": {"only_chat": "prompts/ppt_plan_prompt.md"},
+        "description": "根据用户提供的信息，生成Json格式的PPT演示文档的架构，然后可根据需要，多次调用PPT_SVG依次生成每一页的PPT",
+        "prompts": {"json": "prompts/json_ppt_plan_prompt.md"},
     },
 }
 
@@ -260,7 +286,10 @@ async def generate_xml_with_llm(
         # 验证XML内容是否包含实际的组件
         if "<mxCell id=" not in final_content or final_content.count("<mxCell") < 5:
             logger.warning("AI生成的XML内容过于简单，使用回退方案")
-            return generate_drawio_xml(description, diagram_name)
+            # return generate_drawio_xml(description, diagram_name)
+            return [
+                TextContent(type="text", text=f"❌ 错误：AI生成的XML内容过于简单，包含的组件少于5个，推断为不满足业务要求，请从新生成")
+            ]
 
         try:
             # 尝试解析XML，如果失败会抛出异常
@@ -268,11 +297,17 @@ async def generate_xml_with_llm(
             # 维持原有检查，防止生成空的合法XML
             if final_content.count("<mxCell") < 5:
                 logger.warning("AI生成的XML内容有效但过于简单，使用回退方案")
-                return generate_drawio_xml(description, diagram_name)
+                # return generate_drawio_xml(description, diagram_name)
+                return [
+                    TextContent(type="text", text=f"❌ 错误：AI生成的XML内容有效但过于简单，包含的组件少于5个，推断为不满足业务要求，请从新生成")
+                ]
         except ET.ParseError as e:
             # 1. 专门处理XML解析错误
             logger.error(f"AI生成的XML格式无效: {e}，使用回退方案")
-            return generate_drawio_xml(description, diagram_name)
+            return [
+                TextContent(type="text", text=f"❌ 错误：生成的XML格式无效: {e}，请从新生成")
+            ]
+            # return generate_drawio_xml(description, diagram_name)
 
         return final_content
 
@@ -280,7 +315,10 @@ async def generate_xml_with_llm(
         # 2. 专门处理API级别的错误
         logger.error(f"调用AI API时出错 (类型: {type(e).__name__}): {e}")
         logger.info("因API错误，使用回退方案生成架构图")
-        return generate_drawio_xml(description, diagram_name)
+        return [
+                TextContent(type="text", text=f"❌ 错误：MCP工具调用接口失败，请用户检查MCP工具配置是否正确，详细错误信息: {e}")
+            ]
+        # return generate_drawio_xml(description, diagram_name)
 
     except Exception as e:
         # 3. 捕获所有其他意外错误，确保程序不会崩溃
@@ -288,7 +326,10 @@ async def generate_xml_with_llm(
             f"生成过程中发生未知错误: {e}", exc_info=True
         )  # exc_info=True 会记录堆栈信息，便于调试
         logger.info("因未知错误，使用回退方案生成架构图")
-        return generate_drawio_xml(description, diagram_name)
+        return [
+                TextContent(type="text", text=f"❌ 错误：在生成架构图时发生错误: {e}")
+            ]
+        # return generate_drawio_xml(description, diagram_name)
 
 
 async def generate_html_with_llm(
@@ -727,7 +768,7 @@ async def handle_list_tools() -> List[Tool]:
     return [
         Tool(
             name="generate_diagram",
-            description="当用户的核心意图是【绘制、画出、创建、生成】一个【图表、架构图、流程图、原型图】时，调用此工具。它能生成draw.io文件、HTML原型等。",
+            description="当用户的核心意图是【绘制、画出、创建、生成】一个【图表、架构图、流程图、原型图、产品设计所需的各种图表】时，调用此工具。它能生成draw.io文件、HTML原型等。",
             inputSchema={
                 "type": "object",
                 "properties": {
@@ -737,7 +778,7 @@ async def handle_list_tools() -> List[Tool]:
                     },
                     "file_type": {
                         "type": "string",
-                        "description": "生成的文件保存的格式, only_chat为特殊模式，仅用于交互不会保存文件，仅供PPT规划使用",
+                        "description": "生成的文件保存的格式, json为特殊模式，仅用于交互不会保存文件，仅供PPT规划使用",
                     },
                     "description": {
                         "type": "string",
@@ -766,35 +807,35 @@ async def handle_list_tools() -> List[Tool]:
             description="当需要获取用户电脑上的具体文件夹路径（如桌面、文档/文稿、下载）来保存文件时，调用此工具。",
             inputSchema={"type": "object", "properties": {}, "required": []},
         ),
-        Tool(
-            name="generate_full_ppt_presentation",
-            description="用于端到端地创建一套完整的演示文稿(PPT)。当用户的核心意图是【制作PPT、做幻灯片、生成一个演示、准备一份简报】时，这是唯一的、最合适的工具。它会自动处理规划、设计和文件生成所有步骤。",
-            inputSchema={
-                "type": "object",
-                "properties": {
-                    "description": {
-                        "type": "string",
-                        "description": "用户对于PPT的全部要求，包括主题、内容大纲、原始材料等。这是制作PPT的核心信息。",
-                    },
-                    "output_directory": {
-                        "type": "string",
-                        "description": "用于保存所有SVG幻灯片文件的【文件夹路径】。如果用户描述了模糊的位置（如“桌面”、“文档”），此工具需要先调用`get_local_directory_path`来获取精确路径。",
-                    },
-                    "base_filename": {
-                        "type": "string",
-                        "description": "生成SVG文件的基础名称，会自动添加页码后缀，如 'report' 会生成 'report_01.svg', 'report_02.svg'...",
-                        "default": "slide",
-                    },
-                    # （可选）未来可以增加主题色等参数
-                    # "primary_color": {
-                    #     "type": "string",
-                    #     "description": "PPT的主题色 (HEX格式)，例如 #20B2AA",
-                    #     "default": "#20B2AA",
-                    # },
-                },
-                "required": ["description", "output_directory"],
-            },
-        ),
+        # Tool(
+        #     name="generate_full_ppt_presentation",
+        #     description="用于端到端地创建一套完整的演示文稿(PPT)。当用户的核心意图是【制作PPT、做幻灯片】时，这是唯一的、最合适的工具。它会自动处理规划、设计和文件生成所有步骤。如果用户需要制作drawio相关文件、制作产品原型，严禁使用这个工具。",
+        #     inputSchema={
+        #         "type": "object",
+        #         "properties": {
+        #             "description": {
+        #                 "type": "string",
+        #                 "description": "用户对于PPT的全部要求，包括主题、内容大纲、原始材料等。这是制作PPT的核心信息。",
+        #             },
+        #             "output_directory": {
+        #                 "type": "string",
+        #                 "description": "用于保存所有SVG幻灯片文件的【文件夹路径】。如果用户描述了模糊的位置（如“桌面”、“文档”），此工具需要先调用`get_local_directory_path`来获取精确路径。",
+        #             },
+        #             "base_filename": {
+        #                 "type": "string",
+        #                 "description": "生成SVG文件的基础名称，会自动添加页码后缀，如 'report' 会生成 'report_01.svg', 'report_02.svg'...",
+        #                 "default": "slide",
+        #             },
+        #             # （可选）未来可以增加主题色等参数
+        #             # "primary_color": {
+        #             #     "type": "string",
+        #             #     "description": "PPT的主题色 (HEX格式)，例如 #20B2AA",
+        #             #     "default": "#20B2AA",
+        #             # },
+        #         },
+        #         "required": ["description", "output_directory"],
+        #     },
+        # ),
     ]
 
 
@@ -864,7 +905,7 @@ async def handle_call_tool(name: str, arguments: Dict[str, Any]) -> List[TextCon
                 description, diagram_name, prompt_template
             )
 
-        elif file_type == "only_chat":
+        elif file_type == "json":
             logger.info("调用 PPT 生成器")
             content = await generate_ppt_with_llm(description, prompt_template)
         else:
@@ -875,7 +916,7 @@ async def handle_call_tool(name: str, arguments: Dict[str, Any]) -> List[TextCon
                 )
             ]
 
-        if file_type != "only_chat":
+        if file_type != "json":
             try:
                 output_path = Path(output_file)
                 output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -906,7 +947,7 @@ async def handle_call_tool(name: str, arguments: Dict[str, Any]) -> List[TextCon
             # --- 第1步：调用PPT规划逻辑 (内部调用) ---
             try:
                 logger.info("步骤1: 正在生成PPT架构...")
-                plan_prompt_template = load_prompt_template("PPT_PLAN", "only_chat")
+                plan_prompt_template = load_prompt_template("PPT_PLAN", "json")
                 # 调用您现有的 generate_ppt_with_llm 函数
                 plan_json_str = await generate_ppt_with_llm(description, plan_prompt_template)
                 
