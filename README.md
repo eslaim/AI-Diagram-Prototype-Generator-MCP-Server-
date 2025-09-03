@@ -27,6 +27,7 @@
 | 生成用户旅程图 | `USER_JOURNEY_MAP` | `draw.io` |
 | 生成同理心图 | `EMPATHY_MAP` | `draw.io` |
 | 生成金字塔图 | `PYRAMID_DIAGRAM` | `draw.io`, `svg` |
+| 生成费曼学习法信息图 | `FEYNMAN_INFO_GRAPHICS` | `svg` |
 
 ## 🚀 效果
 以下范例通过chatwise 配合本mcp，使用glm-4.5模型生成

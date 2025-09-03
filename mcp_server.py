@@ -112,6 +112,11 @@ TOOLS_PROMPT_DICT = {
         "prompts": {"draw.io": "prompts/drawIO_pyramidDiagram_prompt.md",
                     "svg": "prompts/svg_pyramidDiagram_prompt.md"},
     },
+    "feynmanInfoGraphics": {
+        "id": "feynmanInfoGraphics",
+        "description": "生成svg格式的费曼学习法信息图表",
+        "prompts": {"svg": "prompts/svg_feynmanInfoGraphics_prompt.md"},
+    },
     "serviceBlueprint": {
         "id": "serviceBlueprint",
         "description": "生成DrawIO格式的用户需求调研或产品设计所需的业务蓝图",
@@ -774,7 +779,7 @@ async def handle_list_tools() -> List[Tool]:
     return [
         Tool(
             name="generate_diagram",
-            description="当用户的核心意图是【绘制、画出、创建、生成】一个【图表、架构图、流程图、原型图、产品设计所需的各种图表】时，调用此工具。它能生成draw.io文件、HTML原型等。",
+            description="当用户的核心意图是【绘制、画出、创建、生成】一个【图表、架构图、流程图、原型图、产品设计所需的各种图表】时，调用此工具。它能生成draw.io文件、HTML原型、svg图表等。提示，如果用户需要生成svg图表，文件生成后，务必告诉用户可以通过 https://www.jyshare.com/more/svgeditor/ 网站对刚才生成的文件进行编辑修改。",
             inputSchema={
                 "type": "object",
                 "properties": {
