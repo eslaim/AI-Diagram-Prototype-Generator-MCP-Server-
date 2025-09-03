@@ -106,6 +106,12 @@ TOOLS_PROMPT_DICT = {
         "description": "生成DrawIO格式的用户需求调研或产品设计所需的同理心映射图",
         "prompts": {"draw.io": "prompts/drawIO_empathyMap_prompt.md"},
     },
+    "pyramidDiagram": {
+        "id": "pyramidDiagram",
+        "description": "生成DrawIO格式或svg格式的金字塔形知识图表",
+        "prompts": {"draw.io": "prompts/drawIO_pyramidDiagram_prompt.md",
+                    "svg": "prompts/svg_pyramidDiagram_prompt.md"},
+    },
     "serviceBlueprint": {
         "id": "serviceBlueprint",
         "description": "生成DrawIO格式的用户需求调研或产品设计所需的业务蓝图",
