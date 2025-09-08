@@ -122,6 +122,21 @@ TOOLS_PROMPT_DICT = {
         "description": "生成DrawIO格式的用户需求调研或产品设计所需的业务蓝图",
         "prompts": {"draw.io": "prompts/drawIO_serviceBlueprint_prompt.md"},
     },
+    "posterDesigner":{
+        "id": "posterDesigner",
+        "description": "生成svg格式的极简主义的海报设计",
+        "prompts": {"svg": "prompts/svg_posterDesigner_prompt.md"},
+    },
+    "Interactive3D":{
+        "id": "Interactive3D",
+        "description": "生成html格式的交互式3D展示",
+        "prompts": {"html": "prompts/html_Interactive3D_prompt.md"},
+    },
+    "studyby3D":{
+        "id": "studyby3D",
+        "description": "生成html格式的教育主题的游戏化学习3D展示",
+        "prompts": {"html": "prompts/html_studyby3D_prompt.md"},
+    },
     "UI_UX": {
         "id": "UI_UX",
         "description": "生成DrawIO格式或html格式的无指定风格UI/UX原型，如用户无特殊指定，一般使用html格式",
