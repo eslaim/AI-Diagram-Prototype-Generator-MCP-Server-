@@ -31,7 +31,7 @@ from openai import OpenAI, APIError, Timeout, APIConnectionError, AsyncOpenAI
 import xml.etree.ElementTree as ET
 from xml.sax.saxutils import escape
 import platform
-from function import svg_clear, xml_drawio_clear, json_clear
+from function import svg_clear, xml_drawio_clear, json_clear, html_clear, xml_checker
 
 # 加载环境变量
 try:
@@ -296,64 +296,25 @@ async def generate_xml_with_llm(
 
         logger.info(f"原始响应长度: {len(xml_content)}")
 
-        # 清理可能的markdown代码块标记
-        # if xml_content.startswith("```xml"):
-        #     xml_content = xml_content[6:]
-        #     logger.info("移除了```xml标记")
-        # if xml_content.startswith("```"):
-        #     xml_content = xml_content[3:]
-        #     logger.info("移除了```标记")
-        # if xml_content.endswith("```"):
-        #     xml_content = xml_content[:-3]
-        #     logger.info("移除了结尾```标记")
-        # # 过滤<br>和<br />标签
-        # xml_content = re.sub(r"<br\s*/?>", "", xml_content)
-        # logger.info("移除了<br>标签")
-        xml_content = xml_drawio_clear(xml_content)
+        final_content = xml_drawio_clear(xml_content)
 
-        final_content = xml_content.strip()
         logger.info(f"最终XML内容长度: {len(final_content)}")
 
-        # 验证XML内容是否包含实际的组件
-        if "<mxCell id=" not in final_content or final_content.count("<mxCell") < 5:
-            logger.warning("AI生成的XML内容过于简单，使用回退方案")
-            # return generate_drawio_xml(description, diagram_name)
+        is_valid, msg = xml_checker(final_content)
+
+        if not is_valid:
+            logger.warning(msg)
             return [
-                TextContent(
-                    type="text",
-                    text=f"❌ 错误：AI生成的XML内容过于简单，包含的组件少于5个，推断为不满足业务要求，请从新生成",
-                )
+                TextContent(type="text", text=msg)
             ]
 
-        try:
-            # 尝试解析XML，如果失败会抛出异常
-            ET.fromstring(final_content)
-            # 维持原有检查，防止生成空的合法XML
-            if final_content.count("<mxCell") < 5:
-                logger.warning("AI生成的XML内容有效但过于简单，使用回退方案")
-                # return generate_drawio_xml(description, diagram_name)
-                return [
-                    TextContent(
-                        type="text",
-                        text=f"❌ 错误：AI生成的XML内容有效但过于简单，包含的组件少于5个，推断为不满足业务要求，请从新生成",
-                    )
-                ]
-        except ET.ParseError as e:
-            # 1. 专门处理XML解析错误
-            logger.error(f"AI生成的XML格式无效: {e}，使用回退方案")
-            return [
-                TextContent(
-                    type="text", text=f"❌ 错误：生成的XML格式无效: {e}，请从新生成"
-                )
-            ]
-            # return generate_drawio_xml(description, diagram_name)
 
         return final_content
 
     except (APIError, Timeout, APIConnectionError) as e:
         # 2. 专门处理API级别的错误
         logger.error(f"调用AI API时出错 (类型: {type(e).__name__}): {e}")
-        logger.info("因API错误，使用回退方案生成架构图")
+        # logger.info("因API错误，使用回退方案生成架构图")
         return [
             TextContent(
                 type="text",
@@ -398,7 +359,7 @@ HTML名称：{html_name}
 
         html_content = await _call_llm_provider(full_prompt)
 
-        final_content = html_content.strip()
+        final_content = html_clear(html_content)
 
         return final_content
 
@@ -407,7 +368,7 @@ HTML名称：{html_name}
         logger.error(
             f"生成过程中发生未知错误: {e}", exc_info=True
         )  # exc_info=True 会记录堆栈信息，便于调试
-        logger.info("因未知错误，使用回退方案生成架构图")
+
         return "生成过程中发生未知错误: {e}"
 
 
@@ -436,14 +397,6 @@ SVG名称：{svg_name}
 
         logger.info("开始清理SVG内容中的Markdown标记...")
 
-        # if svg_content.startswith("```svg"):
-        #     svg_content = svg_content[6:]
-        # elif svg_content.startswith("```"):
-        #     svg_content = svg_content[3:]
-
-        # if svg_content.endswith("```"):
-        #     svg_content = svg_content[:-3]
-
         svg_content = svg_clear(svg_content)
 
         final_content = svg_content.strip()
@@ -453,7 +406,7 @@ SVG名称：{svg_name}
 
     except Exception as e:
         logger.error(f"生成SVG时发生未知错误: {e}", exc_info=True)
-        return f"<svg>...Error: {e}...</svg>"  # 返回一个错误的SVG
+        return "生成过程中发生未知错误: {e}"
 
 
 async def generate_ppt_with_llm(description: str, prompt_template: str) -> str:
@@ -998,13 +951,6 @@ async def handle_call_tool(name: str, arguments: Dict[str, Any]) -> List[TextCon
             plan_json_str = await generate_ppt_with_llm(
                 description, plan_prompt_template
             )
-
-            # 清理和解析返回的JSON
-            # LLM返回的JSON可能被包裹在```json ... ```中
-            # if plan_json_str.startswith("```json"):
-            #     plan_json_str = plan_json_str[7:]
-            #     if plan_json_str.endswith("```"):
-            #         plan_json_str = plan_json_str[:-3]
 
             plan_json_str = json_clear(plan_json_str)
 

@@ -1,5 +1,5 @@
 import re
-
+import xml.etree.ElementTree as ET
 
 def svg_clear(svg_code: str) -> str:
     """
@@ -63,6 +63,7 @@ def xml_drawio_clear(xml_code: str) -> str:
     过滤换行符
     xml_code = re.sub(r"<br\s*/?>", "", xml_code)
 
+    xml_code = xml_code.strip()
     # 如果找到匹配项，则返回匹配到的完整XML代码。
     if match:
         return match.group(0)
@@ -112,3 +113,30 @@ def json_clear(json_code: str) -> str:
     potential_json = cleaned_code[start_pos : end_pos + 1]
 
     return potential_json
+
+def html_clear(html_code: str) -> str:
+    """
+    清理开始的  “```html”，结尾的“```"
+    """
+    if html_code.startswith("```html"):
+        html_code = html_code[7:]
+    if html_code.endswith("```"):
+        html_code = html_code[:-3]
+    html_code = html_code.strip()
+    return html_code
+
+def xml_checker(xml_code: str) -> bool,msg:
+    """
+    检查drawio的元素数量是否足够，是否包含mxcell组件，是否存在信息异常
+    """
+    try:
+        ET.fromstring(xml_code)
+    except ET.ParseError as e:
+        return False, f"❌ 错误：生成的XML格式无效: {e}，请重新生成"
+    
+    # 格式正确后，再检查内容是否过于简单
+    if "<mxCell id=" not in xml_code or xml_code.count("<mxCell") < 5:
+        return False, "❌ 错误：AI生成的XML内容过于简单，包含的组件少于5个，推断为不满足业务要求，请重新生成"
+
+    return True, "✅ XML有效且内容符合基本要求"
+    
