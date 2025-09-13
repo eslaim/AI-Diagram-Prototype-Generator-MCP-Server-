@@ -125,7 +125,7 @@ def html_clear(html_code: str) -> str:
     html_code = html_code.strip()
     return html_code
 
-def xml_checker(xml_code: str) -> bool,msg:
+def xml_checker(xml_code: str) -> tuple[bool, str]:
     """
     检查drawio的元素数量是否足够，是否包含mxcell组件，是否存在信息异常
     """
