@@ -31,7 +31,7 @@ from openai import OpenAI, APIError, Timeout, APIConnectionError, AsyncOpenAI
 import xml.etree.ElementTree as ET
 from xml.sax.saxutils import escape
 import platform
-
+from function import svg_clear, xml_drawio_clear, json_clear
 
 # 加载环境变量
 try:
@@ -98,8 +98,10 @@ TOOLS_PROMPT_DICT = {
     "userPersona": {
         "id": "userPersona",
         "description": "生成DrawIO或html格式的用户需求调研或产品设计所需的用户画像图",
-        "prompts": {"draw.io": "prompts/drawIO_userPersona_prompt.md",
-                    "html":"prompts/html_userPersona_prompt.md"},
+        "prompts": {
+            "draw.io": "prompts/drawIO_userPersona_prompt.md",
+            "html": "prompts/html_userPersona_prompt.md",
+        },
     },
     "empathyMap": {
         "id": "empathyMap",
@@ -109,8 +111,10 @@ TOOLS_PROMPT_DICT = {
     "pyramidDiagram": {
         "id": "pyramidDiagram",
         "description": "生成DrawIO格式或svg格式的金字塔形知识图表",
-        "prompts": {"draw.io": "prompts/drawIO_pyramidDiagram_prompt.md",
-                    "svg": "prompts/svg_pyramidDiagram_prompt.md"},
+        "prompts": {
+            "draw.io": "prompts/drawIO_pyramidDiagram_prompt.md",
+            "svg": "prompts/svg_pyramidDiagram_prompt.md",
+        },
     },
     "feynmanInfoGraphics": {
         "id": "feynmanInfoGraphics",
@@ -122,17 +126,17 @@ TOOLS_PROMPT_DICT = {
         "description": "生成DrawIO格式的用户需求调研或产品设计所需的业务蓝图",
         "prompts": {"draw.io": "prompts/drawIO_serviceBlueprint_prompt.md"},
     },
-    "posterDesigner":{
+    "posterDesigner": {
         "id": "posterDesigner",
         "description": "生成svg格式的极简主义的海报设计",
         "prompts": {"svg": "prompts/svg_posterDesigner_prompt.md"},
     },
-    "Interactive3D":{
+    "Interactive3D": {
         "id": "Interactive3D",
         "description": "生成html格式的交互式3D展示",
         "prompts": {"html": "prompts/html_Interactive3D_prompt.md"},
     },
-    "studyby3D":{
+    "studyby3D": {
         "id": "studyby3D",
         "description": "生成html格式的教育主题的游戏化学习3D展示",
         "prompts": {"html": "prompts/html_studyby3D_prompt.md"},
@@ -293,18 +297,19 @@ async def generate_xml_with_llm(
         logger.info(f"原始响应长度: {len(xml_content)}")
 
         # 清理可能的markdown代码块标记
-        if xml_content.startswith("```xml"):
-            xml_content = xml_content[6:]
-            logger.info("移除了```xml标记")
-        if xml_content.startswith("```"):
-            xml_content = xml_content[3:]
-            logger.info("移除了```标记")
-        if xml_content.endswith("```"):
-            xml_content = xml_content[:-3]
-            logger.info("移除了结尾```标记")
-        # 过滤<br>和<br />标签
-        xml_content = re.sub(r"<br\s*/?>", "", xml_content)
-        logger.info("移除了<br>标签")
+        # if xml_content.startswith("```xml"):
+        #     xml_content = xml_content[6:]
+        #     logger.info("移除了```xml标记")
+        # if xml_content.startswith("```"):
+        #     xml_content = xml_content[3:]
+        #     logger.info("移除了```标记")
+        # if xml_content.endswith("```"):
+        #     xml_content = xml_content[:-3]
+        #     logger.info("移除了结尾```标记")
+        # # 过滤<br>和<br />标签
+        # xml_content = re.sub(r"<br\s*/?>", "", xml_content)
+        # logger.info("移除了<br>标签")
+        xml_content = xml_drawio_clear(xml_content)
 
         final_content = xml_content.strip()
         logger.info(f"最终XML内容长度: {len(final_content)}")
@@ -314,7 +319,10 @@ async def generate_xml_with_llm(
             logger.warning("AI生成的XML内容过于简单，使用回退方案")
             # return generate_drawio_xml(description, diagram_name)
             return [
-                TextContent(type="text", text=f"❌ 错误：AI生成的XML内容过于简单，包含的组件少于5个，推断为不满足业务要求，请从新生成")
+                TextContent(
+                    type="text",
+                    text=f"❌ 错误：AI生成的XML内容过于简单，包含的组件少于5个，推断为不满足业务要求，请从新生成",
+                )
             ]
 
         try:
@@ -325,13 +333,18 @@ async def generate_xml_with_llm(
                 logger.warning("AI生成的XML内容有效但过于简单，使用回退方案")
                 # return generate_drawio_xml(description, diagram_name)
                 return [
-                    TextContent(type="text", text=f"❌ 错误：AI生成的XML内容有效但过于简单，包含的组件少于5个，推断为不满足业务要求，请从新生成")
+                    TextContent(
+                        type="text",
+                        text=f"❌ 错误：AI生成的XML内容有效但过于简单，包含的组件少于5个，推断为不满足业务要求，请从新生成",
+                    )
                 ]
         except ET.ParseError as e:
             # 1. 专门处理XML解析错误
             logger.error(f"AI生成的XML格式无效: {e}，使用回退方案")
             return [
-                TextContent(type="text", text=f"❌ 错误：生成的XML格式无效: {e}，请从新生成")
+                TextContent(
+                    type="text", text=f"❌ 错误：生成的XML格式无效: {e}，请从新生成"
+                )
             ]
             # return generate_drawio_xml(description, diagram_name)
 
@@ -342,8 +355,11 @@ async def generate_xml_with_llm(
         logger.error(f"调用AI API时出错 (类型: {type(e).__name__}): {e}")
         logger.info("因API错误，使用回退方案生成架构图")
         return [
-                TextContent(type="text", text=f"❌ 错误：MCP工具调用接口失败，请用户检查MCP工具配置是否正确，详细错误信息: {e}")
-            ]
+            TextContent(
+                type="text",
+                text=f"❌ 错误：MCP工具调用接口失败，请用户检查MCP工具配置是否正确，详细错误信息: {e}",
+            )
+        ]
         # return generate_drawio_xml(description, diagram_name)
 
     except Exception as e:
@@ -352,9 +368,7 @@ async def generate_xml_with_llm(
             f"生成过程中发生未知错误: {e}", exc_info=True
         )  # exc_info=True 会记录堆栈信息，便于调试
         logger.info("因未知错误，使用回退方案生成架构图")
-        return [
-                TextContent(type="text", text=f"❌ 错误：在生成架构图时发生错误: {e}")
-            ]
+        return [TextContent(type="text", text=f"❌ 错误：在生成架构图时发生错误: {e}")]
         # return generate_drawio_xml(description, diagram_name)
 
 
@@ -421,15 +435,17 @@ SVG名称：{svg_name}
         svg_content = await _call_llm_provider(full_prompt)
 
         logger.info("开始清理SVG内容中的Markdown标记...")
-        
-        if svg_content.startswith("```svg"):
-            svg_content = svg_content[6:]
-        elif svg_content.startswith("```"):
-            svg_content = svg_content[3:]
 
-        if svg_content.endswith("```"):
-            svg_content = svg_content[:-3]
-        
+        # if svg_content.startswith("```svg"):
+        #     svg_content = svg_content[6:]
+        # elif svg_content.startswith("```"):
+        #     svg_content = svg_content[3:]
+
+        # if svg_content.endswith("```"):
+        #     svg_content = svg_content[:-3]
+
+        svg_content = svg_clear(svg_content)
+
         final_content = svg_content.strip()
         logger.info(f"清理后的最终SVG内容长度: {len(final_content)}")
 
@@ -437,7 +453,7 @@ SVG名称：{svg_name}
 
     except Exception as e:
         logger.error(f"生成SVG时发生未知错误: {e}", exc_info=True)
-        return f"<svg>...Error: {e}...</svg>" # 返回一个错误的SVG
+        return f"<svg>...Error: {e}...</svg>"  # 返回一个错误的SVG
 
 
 async def generate_ppt_with_llm(description: str, prompt_template: str) -> str:
@@ -755,6 +771,7 @@ def generate_drawio_xml(
 
     return xml_template
 
+
 async def _call_llm_provider(full_prompt: str) -> str:
     """通用的LLM调用函数，处理多服务商逻辑"""
     provider = os.getenv("PROVIDER", "zhipuai")
@@ -764,7 +781,9 @@ async def _call_llm_provider(full_prompt: str) -> str:
     client = get_cached_client(provider)
     _, default_model, default_max_tokens = CLIENT_FACTORIES[provider]
     model = os.getenv(f"{provider.upper()}_MODEL", default_model)
-    model_max_tokens = int(os.getenv(f"{provider.upper()}_MODEL_MAX_TOKENS", str(default_max_tokens)))
+    model_max_tokens = int(
+        os.getenv(f"{provider.upper()}_MODEL_MAX_TOKENS", str(default_max_tokens))
+    )
 
     logger.info(f"发送请求到AI ({provider}/{model})，提示词长度: {len(full_prompt)}")
 
@@ -783,10 +802,11 @@ async def _call_llm_provider(full_prompt: str) -> str:
             temperature=0.7,
             max_tokens=model_max_tokens,
         )
-    
+
     content = response.choices[0].message.content.strip()
     logger.info(f"AI响应成功，原始响应长度: {len(content)}")
     return content
+
 
 @server.list_tools()
 async def handle_list_tools() -> List[Tool]:
@@ -964,105 +984,142 @@ async def handle_call_tool(name: str, arguments: Dict[str, Any]) -> List[TextCon
                 )
             ]
     elif name == "generate_full_ppt_presentation":
-            description = arguments.get("description")
-            output_directory = arguments.get("output_directory")
-            base_filename = arguments.get("base_filename", "slide")
-            
-            logger.info(f"MCP调用：开始全流程生成PPT，保存至目录: {output_directory}")
+        description = arguments.get("description")
+        output_directory = arguments.get("output_directory")
+        base_filename = arguments.get("base_filename", "slide")
 
-            # --- 第1步：调用PPT规划逻辑 (内部调用) ---
+        logger.info(f"MCP调用：开始全流程生成PPT，保存至目录: {output_directory}")
+
+        # --- 第1步：调用PPT规划逻辑 (内部调用) ---
+        try:
+            logger.info("步骤1: 正在生成PPT架构...")
+            plan_prompt_template = load_prompt_template("PPT_PLAN", "json")
+            # 调用您现有的 generate_ppt_with_llm 函数
+            plan_json_str = await generate_ppt_with_llm(
+                description, plan_prompt_template
+            )
+
+            # 清理和解析返回的JSON
+            # LLM返回的JSON可能被包裹在```json ... ```中
+            # if plan_json_str.startswith("```json"):
+            #     plan_json_str = plan_json_str[7:]
+            #     if plan_json_str.endswith("```"):
+            #         plan_json_str = plan_json_str[:-3]
+
+            plan_json_str = json_clear(plan_json_str)
+
             try:
-                logger.info("步骤1: 正在生成PPT架构...")
-                plan_prompt_template = load_prompt_template("PPT_PLAN", "json")
-                # 调用您现有的 generate_ppt_with_llm 函数
-                plan_json_str = await generate_ppt_with_llm(description, plan_prompt_template)
-                
-                # 清理和解析返回的JSON
-                # LLM返回的JSON可能被包裹在```json ... ```中
-                if plan_json_str.startswith("```json"):
-                    plan_json_str = plan_json_str[7:]
-                    if plan_json_str.endswith("```"):
-                        plan_json_str = plan_json_str[:-3]
-                
                 ppt_plan = json.loads(plan_json_str)
-                slides_to_generate = ppt_plan.get("slides", [])
-                presentation_brief = ppt_plan.get("presentation_brief", {})
-
-                if not slides_to_generate:
-                    return [TextContent(type="text", text="❌ 错误：PPT架构生成失败，未找到任何幻灯片规划。")]
-
-                logger.info(f"步骤1成功：PPT架构已生成，共计 {len(slides_to_generate)} 页。")
-
             except json.JSONDecodeError:
-                return [TextContent(type="text", text=f"❌ 错误：无法解析PPT架构的JSON响应: {plan_json_str}")]
-            except Exception as e:
-                return [TextContent(type="text", text=f"❌ 错误：在生成PPT架构时发生错误: {e}")]
+                # 如果解析失败，说明提取的不是一个有效的JSON
+                return [
+                    TextContent(
+                        type="text",
+                        text="❌ 错误：提供的信息不是标准JSON格式数据: {plan_json_str}",
+                    )
+                ]
 
-            # --- 第2步：循环生成每一页SVG ---
-            try:
-                logger.info("步骤2: 开始逐页生成SVG文件...")
-                svg_prompt_template = load_prompt_template("PPT_SVG", "svg")
-                
-                # 确保输出目录存在
-                output_path = Path(output_directory)
-                output_path.mkdir(parents=True, exist_ok=True)
-                
-                generated_files = []
-                failed_slides = []
 
-                for slide_info in slides_to_generate:
-                    slide_number = slide_info.get("slide_number")
-                    slide_title = slide_info.get("slide_title")
-                    content_summary = slide_info.get("content_summary")
-                    
-                    # 将单页信息组合成一个简单的文本块，作为"原始内容"输入
-                    brief_text = json.dumps(presentation_brief, ensure_ascii=False, indent=2)
-                    content_lines = [
-                        f"## 演示文稿全局简报\n{brief_text}\n",
-                        f"## 当前页面任务\n标题：{slide_title}"
-                    ]
+            slides_to_generate = ppt_plan.get("slides", [])
+            presentation_brief = ppt_plan.get("presentation_brief", {})
 
-                    if isinstance(content_summary, list):
-                        for item in content_summary:
-                            content_lines.append(f"- {item}")
-                    else:
-                        content_lines.append(str(content_summary))
+            if not slides_to_generate:
+                return [
+                    TextContent(
+                        type="text",
+                        text="❌ 错误：PPT架构生成失败，未找到任何幻灯片规划。",
+                    )
+                ]
 
-                    single_page_content = "\n".join(content_lines)
-                    
-                    try:
-                        logger.info(f"  正在生成第 {slide_number} 页: {slide_title}")
+            logger.info(
+                f"步骤1成功：PPT架构已生成，共计 {len(slides_to_generate)} 页。"
+            )
 
-                        svg_content = await generate_svg_with_llm(
-                            description=single_page_content, 
-                            svg_name=f"{base_filename}_{slide_number}", # svg_name 参数可以用于调试
-                            prompt_template=svg_prompt_template
-                        )
-                        
-                        # 保存SVG文件
-                        file_path = output_path / f"{base_filename}_{slide_number:02d}.svg" # :02d 保证页码是两位数，如 01, 02
-                        with open(file_path, "w", encoding="utf-8") as f:
-                            f.write(svg_content)
-                        generated_files.append(str(file_path))
-                    except Exception as e:
-                        logger.error(f"生成第 {slide_number} 页 ({slide_title}) 时失败: {e}")
-                        failed_slides.append(slide_number) # 记录失败的页码
-
-                logger.info("步骤2成功：所有SVG页面均已生成。")
-                
-                summary_message = (
-                    f"✅ 全流程PPT生成完成！\n"
-                    f"共成功生成 {len(generated_files)} 张幻灯片。\n"
-                    f"文件已保存至目录: {output_directory}"
+        except json.JSONDecodeError:
+            return [
+                TextContent(
+                    type="text",
+                    text=f"❌ 错误：无法解析PPT架构的JSON响应: {plan_json_str}",
                 )
-                if failed_slides:
-                    summary_message += f"\n❌ 但有 {len(failed_slides)} 页生成失败，页码为: {failed_slides}。请检查日志获取详细信息。"
+            ]
+        except Exception as e:
+            return [
+                TextContent(type="text", text=f"❌ 错误：在生成PPT架构时发生错误: {e}")
+            ]
 
-                return [TextContent(type="text", text=summary_message)]
+        # --- 第2步：循环生成每一页SVG ---
+        try:
+            logger.info("步骤2: 开始逐页生成SVG文件...")
+            svg_prompt_template = load_prompt_template("PPT_SVG", "svg")
 
-            except Exception as e:
-                return [TextContent(type="text", text=f"❌ 错误：在生成SVG页面时发生错误: {e}")]
-        
+            # 确保输出目录存在
+            output_path = Path(output_directory)
+            output_path.mkdir(parents=True, exist_ok=True)
+
+            generated_files = []
+            failed_slides = []
+
+            for slide_info in slides_to_generate:
+                slide_number = slide_info.get("slide_number")
+                slide_title = slide_info.get("slide_title")
+                content_summary = slide_info.get("content_summary")
+
+                # 将单页信息组合成一个简单的文本块，作为"原始内容"输入
+                brief_text = json.dumps(
+                    presentation_brief, ensure_ascii=False, indent=2
+                )
+                content_lines = [
+                    f"## 演示文稿全局简报\n{brief_text}\n",
+                    f"## 当前页面任务\n标题：{slide_title}",
+                ]
+
+                if isinstance(content_summary, list):
+                    for item in content_summary:
+                        content_lines.append(f"- {item}")
+                else:
+                    content_lines.append(str(content_summary))
+
+                single_page_content = "\n".join(content_lines)
+
+                try:
+                    logger.info(f"  正在生成第 {slide_number} 页: {slide_title}")
+
+                    svg_content = await generate_svg_with_llm(
+                        description=single_page_content,
+                        svg_name=f"{base_filename}_{slide_number}",  # svg_name 参数可以用于调试
+                        prompt_template=svg_prompt_template,
+                    )
+
+                    # 保存SVG文件
+                    file_path = (
+                        output_path / f"{base_filename}_{slide_number:02d}.svg"
+                    )  # :02d 保证页码是两位数，如 01, 02
+                    with open(file_path, "w", encoding="utf-8") as f:
+                        f.write(svg_content)
+                    generated_files.append(str(file_path))
+                except Exception as e:
+                    logger.error(
+                        f"生成第 {slide_number} 页 ({slide_title}) 时失败: {e}"
+                    )
+                    failed_slides.append(slide_number)  # 记录失败的页码
+
+            logger.info("步骤2成功：所有SVG页面均已生成。")
+
+            summary_message = (
+                f"✅ 全流程PPT生成完成！\n"
+                f"共成功生成 {len(generated_files)} 张幻灯片。\n"
+                f"文件已保存至目录: {output_directory}"
+            )
+            if failed_slides:
+                summary_message += f"\n❌ 但有 {len(failed_slides)} 页生成失败，页码为: {failed_slides}。请检查日志获取详细信息。"
+
+            return [TextContent(type="text", text=summary_message)]
+
+        except Exception as e:
+            return [
+                TextContent(type="text", text=f"❌ 错误：在生成SVG页面时发生错误: {e}")
+            ]
+
     elif name == "list_supported_tools":
         # 这个函数现在可以提供更精确的信息
         supported_types_text = "目前支持的意图(prompt_id)和格式(file_type)组合有：\n"
